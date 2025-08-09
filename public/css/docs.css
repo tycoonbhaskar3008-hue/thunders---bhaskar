@@ -1,0 +1,29 @@
+/* #fr-logo{
+    display: none;
+}
+
+.fr-toolbar{
+    background: var(--color-primary-content);
+}
+
+.fr-placeholder{
+    display: none !important;
+}
+
+.fr-counter{
+    visibility: hidden;
+} */
+
+#gorilla-editor{
+    background-color: transparent;
+}
+
+.input{
+    outline: none;
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    font-size: medium;
+    box-shadow: none;
+    padding-inline: 0px;
+}

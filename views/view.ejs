@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>
+		Activities - Thunders
+	</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<%- include('components/styles.ejs'); -%>
+		<link rel="stylesheet" type="text/css" href="css/view.css">
+
+</head>
+
+<body>
+
+	<%- include('components/header.ejs'); -%>
+		<%- include('components/sidebar.ejs'); -%>
+
+			<div class="wrapper flex mt-18 ml-25 mr-5 pb-15">
+
+
+				<div class="container flex-1 mx-auto">
+					<!-- Content goes here-->
+
+					<div class="card card-border w-full bg-base-200 shadow-sm">
+						<div class="card-body">
+							<div class="flex justify-content-between w-full">
+								<div class="flex flex-1 gap-4 items-end">
+									<fieldset class="fieldset">
+										<legend class="fieldset-legend">Week</legend>
+										<select id="inputWeek" class="select select-sm">
+
+										</select>
+
+									</fieldset>
+									<fieldset class="fieldset">
+										<legend class="fieldset-legend">Year</legend>
+										<select id="inputYear" class="select select-sm">
+											<option>2025</option>
+											<option>2026</option>
+										</select>
+
+									</fieldset>
+									<fieldset class="fieldset">
+										<legend class="fieldset-legend">Group</legend>
+										<select id="groupSelect" class="select select-sm">
+											<option>SKB</option>
+											<option>Sapphire</option>
+										</select>
+
+									</fieldset>
+
+									<button id="searchActivity" class="btn btn-sm btn-primary btn-square mb-1" disabled>
+										<span class="loading loading-spinner loading-sm"></span>
+									</button>
+								</div>
+								<div role="alert" class="alert alert-success alert-soft w-100 hidden">
+									<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current"
+										fill="none" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+											d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+									</svg>
+									<span id="alert_content">Your purchase has been confirmed!</span>
+								</div>
+							</div>
+
+
+
+						</div>
+					</div>
+					<div id="tabs" class="tabs tabs-lift mt-4">
+					</div>
+
+					<!-- Content ends here-->
+				</div>
+			</div>
+
+			<%- include('components/scripts.ejs'); -%>
+				<script src="/js/view.js"></script>
+
+</body>
+
+</html>
