@@ -1,10 +1,27 @@
 var userJson = [];
 var sapphireJson = [];
-
 var currPage = 1;
+
+// Initialize week dropdown for activity modal
+function loadWeekDropdown() {
+  var weeks = "";
+  for (let i = 1; i <= 53; i++) {
+    weeks += `<option value="${i}">Week ${i}</option>`;
+  }
+  $("#activityWeek").append(weeks);
+}
+
+// Load week dropdown on page load
+$(document).ready(function() {
+  loadWeekDropdown();
+});
 
 $("#saveMember").on("click", function () {
   addPerson();
+});
+
+$("#saveActivity").on("click", function () {
+  saveActivity();
 });
 
 function reloadData(){
@@ -38,14 +55,115 @@ function hideLoader() {
 // LOADER ENDS
 //==========================================
 
+function addPerson() {
+  const memberData = {
+    node: $("#memberNode").val(),
+    group: $("#memberGroup").val(),
+    irId: $("#memberIRID").val(),
+    name: $("#memberName").val(),
+    phone: $("#memberPhone").val(),
+    email: $("#memberEmail").val(),
+    targets: {
+      networking: $("#memberNetworkingTarget").val() || 0,
+      infos: $("#memberInfosTarget").val() || 0,
+      invis: $("#memberInvisTarget").val() || 0,
+      plans: $("#memberPlansTarget").val() || 0,
+      meetups: $("#memberMeetupsTarget").val() || 0,
+      socialMedia: $("#memberSocialMediaTarget").val() || 0
+    }
+  };
+
+  // Validate required fields
+  if (!memberData.node || !memberData.group || !memberData.name) {
+    alert("Please fill in all required fields (Node, Group, and Name)");
+    return;
+  }
+
+  $.ajax({
+    url: "/add/saveMember",
+    type: "POST",
+    dataType: "json",
+    data: memberData,
+    success: function (response) {
+      if (response.success) {
+        alert("Member added successfully!");
+        $("#addPersonModal").removeClass("modal-open");
+        reloadData();
+        // Clear form
+        $("#memberNode, #memberGroup, #memberIRID, #memberName, #memberPhone, #memberEmail").val("");
+        $("#memberNetworkingTarget, #memberInfosTarget, #memberInvisTarget, #memberPlansTarget, #memberMeetupsTarget, #memberSocialMediaTarget").val("");
+      } else {
+        alert("Error: " + response.message);
+      }
+    },
+    error: function (xhr, status, error) {
+      alert("Error adding member: " + error);
+    }
+  });
+}
+
+function saveActivity() {
+  const activityData = {
+    memberId: $("#activityMemberId").val(),
+    week: $("#activityWeek").val(),
+    year: $("#activityYear").val(),
+    activities: {
+      networking: $("#activityNetworking").val() || 0,
+      infos: $("#activityInfos").val() || 0,
+      invis: $("#activityInvis").val() || 0,
+      plans: $("#activityPlans").val() || 0,
+      meetups: $("#activityMeetups").val() || 0,
+      socialMedia: $("#activitySocialMedia").val() || 0
+    }
+  };
+
+  if (!activityData.week || !activityData.year) {
+    alert("Please select week and year");
+    return;
+  }
+
+  $.ajax({
+    url: "/add/saveActivity",
+    type: "POST",
+    dataType: "json",
+    data: activityData,
+    success: function (response) {
+      if (response.success) {
+        alert("Activity updated successfully!");
+        $("#activityUpdateModal").removeClass("modal-open");
+      } else {
+        alert("Error: " + response.message);
+      }
+    },
+    error: function (xhr, status, error) {
+      alert("Error updating activity: " + error);
+    }
+  });
+}
+
+function openActivityModal(memberId, memberName, targets) {
+  $("#activityMemberId").val(memberId);
+  $("#activityMemberName").text(memberName);
+  
+  // Set target values
+  $("#networkingTarget").text(targets.networking || 0);
+  $("#infosTarget").text(targets.infos || 0);
+  $("#invisTarget").text(targets.invis || 0);
+  $("#plansTarget").text(targets.plans || 0);
+  $("#meetupsTarget").text(targets.meetups || 0);
+  $("#socialMediaTarget").text(targets.socialMedia || 0);
+  
+  $("#activityUpdateModal").addClass("modal-open");
+}
+
+function addMemberModal() {
+  $("#addPersonModal").addClass("modal-open");
+}
+
 function addName(name) {
   if ($("#memberGroup").val() == "SKB") {
-    // userJson.push({ name: name, namelist: ""});
-    // generateNamesTable(userJson);
     $("#groupSelect").val("SKB").change();
   } else {
-    // sapphireJson.push({ name: name});
-    // generateNamesTable(sapphireJson, "Sapphire");
     $("#groupSelect").val("Sapphire").change();
   }
 }
@@ -82,7 +200,6 @@ function generateNamesTable(response, group = "SKB") {
   $("#pageNumber").html(currPage);
 
   var endindex = 0;
-
   var startindex = (currPage - 1) * 5;
 
   if (response.length > currPage * 5) {
@@ -92,115 +209,56 @@ function generateNamesTable(response, group = "SKB") {
   }
 
   for (let i = startindex; i < endindex; i++) {
-    if (group == "SKB") {
-      $(".names").append(`
-               <tr>
-											<th>${i + 1}</th>
-											<td>
-												<div class="flex items-center gap-3">
-													<div class="avatar">
-														<div class="mask mask-squircle h-12 w-12">
-															<img src="images/avatars/${response[i].avatarId == 0
-          ? "default.png"
-          : response[i].avatarId + ".avif"
-        }" />
-														</div>
-													</div>
-													<div>
-														<div class="font-bold">${response[i].name}</div>
-														<div class="text-xs opacity-50 items-center">
-                                                            ${response[i].email}
-                                                           ${response[i]
-          .email == ""
-          ? ""
-          : `<button class="btn btn-ghost btn-xs btn-square" onclick="copyToClipboard(this,'${response[i].email}')">
-                                                                <i class="size-4" data-lucide="copy"></i> 
-                                                            </button>
-                                                            <span class="badge badge-neutral badge-xs badge-primary hidden">copied</span>`
-        } 
-                                                        </div>
-													</div>
-												</div>
-											</td>
-											<td>
-												${response[i].namelist == ""
-          ? '<span class="badge badge-soft badge-error"><i data-lucide="link-2-off" class="size-4 me-1"></i> Not Connected</span>'
-          : '<span class="badge badge-soft badge-success"><i data-lucide="link-2" class="size-4 me-1"></i>Connected</span>'
-        }
-											</td>
-                      
-                                            <td class="text-center">
-                                                ${response[i].nlCount}
-                                            </td>
-                                            <td class="text-center text-sm opacity-50">
-                                                ${parseLastLogin(response[i].lastLogin)}
-                                            </td>
-											<td class="text-center">
-												<span class="badge badge-soft badge-primary">${group}</span>
-											</td>
-											<th class="text-center">
-												<button class="btn btn-ghost btn-sm btn-square" onclick="thunderboltModal('${response[i].namelist
-        }', '${response[i].name}')" ${response[i].namelist == "" ? "disabled" : ""
-        }>
-													<i class="size-5 ${response[i].namelist == "" ? "" : "bolt"
-        }" data-lucide="zap"></i>
-												</button>
-												<button class="btn btn-ghost btn-sm btn-square" onclick="editUserModal('${response[i].name
-        }','${response[i].namelist}')">
-													<i class="size-5" data-lucide="square-pen"></i>
-												</button>
-												<button class="btn btn-ghost btn-sm btn-square" onclick="deleteUserModal('${response[i].name
-        }', '${group}')">
-													<i class="size-5 text-error" data-lucide="trash"></i>
-												</button>
-											</th>
-										</tr>
-                    `);
-    } else {
-      $(".names").append(`
-               <tr>
-											<th>${i + 1}</th>
-											<td>
-												<div class="flex items-center gap-3">
-													<div class="avatar">
-														<div class="mask mask-squircle h-12 w-12">
-															<img src="images/avatars/default.png" />
-														</div>
-													</div>
-													<div>
-														<div class="font-bold">${response[i].name}</div>
-														
-													</div>
-												</div>
-											</td>
-                      <td class="">
-												
-											</td>
-											<td class="">
-												
-											</td>
-                                            <td>
-                                            </td>
-											<td class="text-center">
-												<span class="badge badge-soft badge-primary">${group}</span>
-											</td>
-											<th >
-												<button class="btn btn-ghost btn-sm btn-square" onclick="deleteUserModal('${response[i].name
-        }', '${group}')">
-													<i class="size-5 text-error" data-lucide="trash"></i>
-												</button>
-											</th>
-										</tr>
-                    `);
-    }
-    loadIcons();
+    const member = response[i];
+    $(".names").append(`
+      <tr>
+        <th>${i + 1}</th>
+        <td>
+          <div class="flex items-center gap-3">
+            <div class="avatar">
+              <div class="mask mask-squircle w-12 h-12">
+                <img src="/images/avatars/default.png" alt="Avatar" />
+              </div>
+            </div>
+            <div>
+              <div class="font-bold">${member.name || 'N/A'}</div>
+            </div>
+          </div>
+        </td>
+        <td>${member.irId || 'N/A'}</td>
+        <td>${member.phone || 'N/A'}</td>
+        <td>${member.email || 'N/A'}</td>
+        <td class="text-center">
+          <span class="badge badge-primary">${member.node || 'N/A'}</span>
+        </td>
+        <td class="text-center">
+          <span class="badge badge-secondary">${member.group || 'N/A'}</span>
+        </td>
+        <td class="text-center">
+          <button class="btn btn-sm btn-info" onclick="openActivityModal('${member.id}', '${member.name}', ${JSON.stringify(member.targets || {})})">
+            <i class="size-4" data-lucide="activity"></i>
+            Activities
+          </button>
+        </td>
+        <td class="text-center">
+          <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-sm btn-ghost">
+              <i class="size-4" data-lucide="more-horizontal"></i>
+            </div>
+            <ul tabindex="0" class="dropdown-content menu z-[1] shadow bg-base-100 rounded-box w-52">
+              <li><a onclick="editMember('${member.id}')">Edit</a></li>
+              <li><a onclick="deleteMember('${member.id}', '${member.name}')" class="text-error">Delete</a></li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    `);
   }
 
-  if (group == "SKB") {
-    setNLCount(userJson.length);
-  } else {
-    setNLCount(sapphireJson.length);
-  }
+  $("#fromProspect").html(startindex + 1);
+  $("#toProspect").html(endindex);
+  $("#nlCount").html(response.length);
+  $("#pagination").removeClass("hidden");
 }
 
 function copyToClipboard(elem, text) {
@@ -415,52 +473,6 @@ function loadSapphire() {
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send();
 }
-
-function addPerson() {
-  const nm = $("#memberName").val();
-  const grp = $("#memberGroup").val();
-  const data = { name: nm, group: grp };
-
-  const xhttp = new XMLHttpRequest();
-  xhttp.onload = function () {
-    const response = this.responseText;
-    if (response == "success") {
-      // $(".names").html("");
-      addName(nm);
-      $("#newPersonName").html(nm);
-      $("#memberName").val("");
-      $(".add_alert").removeClass("hide").addClass("show");
-      setTimeout(function () {
-        $(".add_alert").removeClass("show").addClass("hide");
-      }, 6000);
-    }
-  };
-  xhttp.open("POST", "/add/addUser");
-  xhttp.setRequestHeader("Content-Type", "application/json");
-  xhttp.send(JSON.stringify(data));
-
-  showLoader(
-    "Adding new member - <strong>" +
-    nm +
-    "</strong> to <strong>" +
-    grp +
-    "</strong>.. please wait !"
-  );
-}
-
-$("#updateUserBtn").click(function () {
-  const name = editUserName.value;
-  const id = editUserID.value;
-  showLoader("Updating <strong>" + name + "</strong>.. please wait !");
-  const data = { name: name, link: id };
-  const xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "/add/updateNamelist");
-  xhttp.onload = function () {
-    loadNames();
-  };
-  xhttp.setRequestHeader("Content-Type", "application/json");
-  xhttp.send(JSON.stringify(data));
-});
 
 function deleteUser() {
   const nm = deleteMemberName.innerHTML;

@@ -61,11 +61,13 @@
 										<tr>
 											<th>#</th>
 											<th>Name</th>
-											<th>Thunderbolt ID</th>
-											<th class="text-center">Namelist</th>
-											<th class="text-center">Last Login</th>
+											<th>IR ID</th>
+											<th>Phone</th>
+											<th>Email</th>
+											<th class="text-center">Node</th>
 											<th class="text-center">Group</th>
-											<th class="text-center"></th>
+											<th class="text-center">Activities</th>
+											<th class="text-center">Actions</th>
 										</tr>
 									</thead>
 									<tbody class="names">
@@ -100,33 +102,103 @@
 				</div>
 			</div>
 			<dialog id="addPersonModal" class="modal">
-				<div class="modal-box">
-					<h3 class="text-lg font-bold">Add new member</h3>
-					<div class="flex w-full gap-2 my-4">
-
-						<div class="flex-none">
-							<label class="select">
-								<span class="label">Group</span>
-								<select id="memberGroup" onchange="checkValidName()">
-									<option>SKB</option>
-									<option>Sapphire</option>
-								</select>
+				<div class="modal-box w-11/12 max-w-4xl">
+					<h3 class="text-lg font-bold mb-4">Add New Member</h3>
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<div class="form-control">
+							<label class="label">
+								<span class="label-text font-semibold">Node</span>
 							</label>
+							<select id="memberNode" class="select select-bordered w-full" onchange="checkValidName()">
+								<option value="">Select Node</option>
+								<option value="Bhaskar">Bhaskar Node</option>
+								<option value="Harshitha">Harshitha Node</option>
+							</select>
 						</div>
-						<div class="flex-1">
-							<label class="input">
-								<span class="label">Name</span>
-								<input type="text" id="memberName" onchange="checkValidName()" />
-								<span id="loader_isValidName" class="loading loading-spinner loading-md hidden"></span>
-								<span id="status_isValidName"></span>
+						<div class="form-control">
+							<label class="label">
+								<span class="label-text font-semibold">Group</span>
 							</label>
+							<select id="memberGroup" class="select select-bordered w-full" onchange="checkValidName()">
+								<option value="">Select Group</option>
+								<option value="SKB">SKB</option>
+								<option value="Sapphire">Sapphire</option>
+							</select>
 						</div>
-
+						<div class="form-control">
+							<label class="label">
+								<span class="label-text font-semibold">IR ID</span>
+							</label>
+							<input type="text" id="memberIRID" class="input input-bordered w-full" placeholder="Enter IR ID" onchange="checkValidName()" />
+						</div>
+						<div class="form-control">
+							<label class="label">
+								<span class="label-text font-semibold">Full Name</span>
+							</label>
+							<input type="text" id="memberName" class="input input-bordered w-full" placeholder="Enter full name" onchange="checkValidName()" />
+							<span id="loader_isValidName" class="loading loading-spinner loading-sm hidden"></span>
+							<span id="status_isValidName" class="text-sm"></span>
+						</div>
+						<div class="form-control">
+							<label class="label">
+								<span class="label-text font-semibold">Phone Number</span>
+							</label>
+							<input type="tel" id="memberPhone" class="input input-bordered w-full" placeholder="Enter phone number" />
+						</div>
+						<div class="form-control">
+							<label class="label">
+								<span class="label-text font-semibold">Email ID</span>
+							</label>
+							<input type="email" id="memberEmail" class="input input-bordered w-full" placeholder="Enter email address" />
+						</div>
 					</div>
+					
+					<!-- Activity Targets Section -->
+					<div class="mt-6">
+						<h4 class="text-md font-bold mb-3">Activity Targets</h4>
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Networking Target</span>
+								</label>
+								<input type="number" id="memberNetworkingTarget" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Infos Target</span>
+								</label>
+								<input type="number" id="memberInfosTarget" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Invis Target</span>
+								</label>
+								<input type="number" id="memberInvisTarget" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Plans Target</span>
+								</label>
+								<input type="number" id="memberPlansTarget" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Meetups Target</span>
+								</label>
+								<input type="number" id="memberMeetupsTarget" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Social Media Target</span>
+								</label>
+								<input type="number" id="memberSocialMediaTarget" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+						</div>
+					</div>
+					
 					<div class="modal-action">
 						<form method="dialog">
-							<!-- if there is a button in form, it will close the modal -->
-							<button class="btn mr-1">Cancel</button>
+							<button class="btn mr-2">Cancel</button>
 							<button class="btn btn-primary" id="saveMember">Add Member</button>
 						</form>
 					</div>
@@ -196,6 +268,91 @@
 					<button>close</button>
 				</form>
 			</dialog>
+			<!-- Activity Update Modal -->
+			<dialog id="activityUpdateModal" class="modal">
+				<div class="modal-box w-11/12 max-w-5xl">
+					<input type="hidden" id="activityMemberId" />
+					<h3 class="text-lg font-bold mb-4">Update Activities - <span id="activityMemberName" class="text-primary"></span></h3>
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<div class="form-control">
+							<label class="label">
+								<span class="label-text font-semibold">Week</span>
+							</label>
+							<select id="activityWeek" class="select select-bordered w-full">
+								<option value="">Select Week</option>
+							</select>
+						</div>
+						<div class="form-control">
+							<label class="label">
+								<span class="label-text font-semibold">Year</span>
+							</label>
+							<select id="activityYear" class="select select-bordered w-full">
+								<option value="2025">2025</option>
+								<option value="2026">2026</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="mt-6">
+						<h4 class="text-md font-bold mb-3">Activity Progress</h4>
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Networking</span>
+									<span class="label-text-alt">Target: <span id="networkingTarget">0</span></span>
+								</label>
+								<input type="number" id="activityNetworking" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Infos</span>
+									<span class="label-text-alt">Target: <span id="infosTarget">0</span></span>
+								</label>
+								<input type="number" id="activityInfos" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Invis</span>
+									<span class="label-text-alt">Target: <span id="invisTarget">0</span></span>
+								</label>
+								<input type="number" id="activityInvis" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Plans</span>
+									<span class="label-text-alt">Target: <span id="plansTarget">0</span></span>
+								</label>
+								<input type="number" id="activityPlans" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Meetups</span>
+									<span class="label-text-alt">Target: <span id="meetupsTarget">0</span></span>
+								</label>
+								<input type="number" id="activityMeetups" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+							<div class="form-control">
+								<label class="label">
+									<span class="label-text">Social Media</span>
+									<span class="label-text-alt">Target: <span id="socialMediaTarget">0</span></span>
+								</label>
+								<input type="number" id="activitySocialMedia" class="input input-bordered w-full" placeholder="0" min="0" />
+							</div>
+						</div>
+					</div>
+					
+					<div class="modal-action">
+						<form method="dialog">
+							<button class="btn mr-2">Cancel</button>
+							<button class="btn btn-primary" id="saveActivity">Update Activities</button>
+						</form>
+					</div>
+				</div>
+				<form method="dialog" class="modal-backdrop">
+					<button>close</button>
+				</form>
+			</dialog>
+
 			<dialog id="thunderboltNLModal" class="modal">
 				<div class="modal-box w-11/12 max-w-7xl">
 					<h3 class="text-lg font-bold">Thunderbolt Namelist : <span id="namelistModalTitle"

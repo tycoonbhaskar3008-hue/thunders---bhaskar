@@ -333,7 +333,13 @@ function updateDashboardUI(data) {
   } else {
     $("#dashPlans").addClass("text-success");
   }
-  dashCount.innerHTML = data.count;
+  
+  // Update node counts
+  const bhaskarNodeCount = document.getElementById("bhaskarNodeCount");
+  const harshithaNodeCount = document.getElementById("harshithaNodeCount");
+  
+  if (bhaskarNodeCount) bhaskarNodeCount.innerHTML = data.bhaskarNodeCount || 0;
+  if (harshithaNodeCount) harshithaNodeCount.innerHTML = data.harshithaNodeCount || 0;
 }
 
 function updateChartDataUI(chartData) {

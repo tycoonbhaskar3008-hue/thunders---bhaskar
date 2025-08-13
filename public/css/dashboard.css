@@ -1,3 +1,4 @@
+/* Dashboard improvements with money-themed styling */
 [data-theme="light"] {
   .bg-team {
     background: var(--color-primary-content);
@@ -10,4 +11,140 @@
     background: var(--color-primary);
     color: var(--color-neutral-content);
   }
+}
+
+/* Money-themed gradients */
+.bg-gradient-money {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.bg-gradient-warning {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.bg-gradient-info {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+/* Card improvements */
+.card {
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* Stats improvements */
+.stats {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.stats:hover {
+  transform: scale(1.02);
+}
+
+.stat {
+  padding: 1.5rem;
+}
+
+.stat-value {
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-title {
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* Chart container improvements */
+.chartData {
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 1rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .stats {
+    margin-bottom: 1rem;
+  }
+  
+  .chartData {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .chartData > div {
+    width: 100%;
+  }
+}
+
+/* Animation for stats */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stats {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Loading states */
+.loading {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+/* Money icon styling */
+[data-lucide="indian-rupee"] {
+  color: #fbbf24;
+  filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.3));
+}
+
+/* Network icon styling */
+[data-lucide="network"] {
+  color: #3b82f6;
+  filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
+}
+
+/* Phone icon styling */
+[data-lucide="phone-call"],
+[data-lucide="phone-outgoing"] {
+  color: #10b981;
+  filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.3));
+}
+
+/* Users icon styling */
+[data-lucide="users"] {
+  color: #8b5cf6;
+  filter: drop-shadow(0 2px 4px rgba(139, 92, 246, 0.3));
 }

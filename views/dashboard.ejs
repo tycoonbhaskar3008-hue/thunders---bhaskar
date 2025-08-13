@@ -19,7 +19,6 @@
 
 			<div class="wrapper flex mt-18 ml-25 mr-5">
 
-
 				<div class="container flex-1 mx-auto">
 					<!-- Content goes here-->
 
@@ -32,21 +31,33 @@
 									<p>Here is your dashboard overview</p>
 								</div>
 								<div class="flex-none basis-4/12">
-									<div class="stats shadow w-full bg-team h-30">
-										<div class="stat">
-											<div class="stat-figure  opacity-60">
-												<i data-lucide="users"></i>
+									<div class="grid grid-cols-2 gap-4">
+										<div class="stats shadow w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+											<div class="stat">
+												<div class="stat-figure opacity-80">
+													<i data-lucide="users" class="text-white"></i>
+												</div>
+												<div class="stat-title font-semibold text-white">Bhaskar Node</div>
+												<div id="bhaskarNodeCount" class="stat-value text-2xl text-white">0</div>
+												<div class="stat-desc text-blue-100"></div>
 											</div>
-											<div class="stat-title font-semibold">Team Count</div>
-											<div id="dashCount" class="stat-value text-4xl"></div>
-											<div class="stat-desc"></div>
+										</div>
+										<div class="stats shadow w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+											<div class="stat">
+												<div class="stat-figure opacity-80">
+													<i data-lucide="users" class="text-white"></i>
+												</div>
+												<div class="stat-title font-semibold text-white">Harshitha Node</div>
+												<div id="harshithaNodeCount" class="stat-value text-2xl text-white">0</div>
+												<div class="stat-desc text-purple-100"></div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="stats shadow mt-3 w-full h-40">
+							<div class="stats shadow mt-3 w-full h-40 bg-gradient-to-r from-green-50 to-emerald-50">
 								<div class="stat">
-									<div class="stat-figure  opacity-60">
+									<div class="stat-figure opacity-60">
 										<i data-lucide="network"></i>
 									</div>
 									<div class="stat-title font-bold">Networking</div>
@@ -54,7 +65,7 @@
 									<div class="stat-desc"></div>
 								</div>
 								<div class="stat">
-									<div class="stat-figure  opacity-60">
+									<div class="stat-figure opacity-60">
 										<i data-lucide="phone-call"></i>
 									</div>
 									<div class="stat-title font-bold">Infos</div>
@@ -62,7 +73,7 @@
 									<div class="stat-desc"></div>
 								</div>
 								<div class="stat">
-									<div class="stat-figure  opacity-60">
+									<div class="stat-figure opacity-60">
 										<i data-lucide="phone-outgoing"></i>
 									</div>
 									<div class="stat-title font-bold">Invis</div>
@@ -70,7 +81,7 @@
 									<div class="stat-desc"></div>
 								</div>
 								<div class="stat">
-									<div class="stat-figure  opacity-60">
+									<div class="stat-figure opacity-60">
 										<i data-lucide="indian-rupee"></i>
 									</div>
 									<div class="stat-title font-bold">Plans</div>
@@ -104,9 +115,6 @@
 							</div>
 						</div>
 					</div>
-
-
-
 
 					<!-- Content ends here-->
 				</div>
